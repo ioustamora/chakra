@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "chakra"
+version = "0.1.0"
+description = "python kademlia dht chat with ecies encryption"
+authors = ["Your Name <you@example.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+asyncio = "^3.4.3"
+kademlia = "^2.2.2"
+eciespy = "^0.4.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
