@@ -32,36 +32,32 @@ async def set_key_value(args):
     server.stop()
 
 
-def connect_to_bootstrap_node(args):
-    loop = asyncio.get_event_loop()
-    loop.set_debug(True)
-
-    loop.run_until_complete(server.listen(args.l))
+async def connect_to_bootstrap_node(args):
+    await server.listen(args.l)
     bootstrap_node = (args.i, int(args.p))
-    loop.run_until_complete(server.bootstrap([bootstrap_node]))
+    await server.bootstrap([bootstrap_node])
 
     try:
-        loop.run_forever()
-    except KeyboardInterrupt:
+        # Keep the server running
+        while True:
+            await asyncio.sleep(1)
+    except asyncio.CancelledError:
         pass
     finally:
         server.stop()
-        loop.close()
 
 
-def create_bootstrap_node(args):
-    loop = asyncio.get_event_loop()
-    loop.set_debug(True)
-
-    loop.run_until_complete(server.listen(args.p))
+async def create_bootstrap_node(args):
+    await server.listen(args.p)
 
     try:
-        loop.run_forever()
-    except KeyboardInterrupt:
+        # Keep the server running
+        while True:
+            await asyncio.sleep(1)
+    except asyncio.CancelledError:
         pass
     finally:
         server.stop()
-        loop.close()
 
 
 async def main():
@@ -91,7 +87,7 @@ async def main():
     print(args)
 
     if args.mode == 'node':
-        create_bootstrap_node(args)
+        await create_bootstrap_node(args)
 
     if args.mode == 'set':
         await set_key_value(args)
